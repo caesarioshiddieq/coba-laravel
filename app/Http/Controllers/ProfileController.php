@@ -61,8 +61,11 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 
-    public function testingNewFunction ()
+    /**
+     * Display the user's profile form.
+     */
+    public function show(Request $request): Response
     {
-        return 'Testing new function just trying';
+        return Inertia::render('Profile/Show');
     }
 }
