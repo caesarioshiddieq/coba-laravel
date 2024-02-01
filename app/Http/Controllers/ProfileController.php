@@ -68,4 +68,21 @@ class ProfileController extends Controller
     {
         return Inertia::render('Profile/Show');
     }
+
+    /**
+     * Update the user's profile information.
+     */
+    public function updatePassword(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required','string','min:8', 'confirmed'],
+        ]);
+
+        $request->user()->update([
+            'password' => ($request->password),
+        ]);
+
+        return Redirect::route('profile.edit');
+    }
 }
