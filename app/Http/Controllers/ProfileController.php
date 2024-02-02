@@ -61,8 +61,45 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 
-    public function testingNewFunction ()
+    /**
+     * Display the user's profile form.
+     */
+    public function show(Request $request): Response
     {
-        return 'Testing new function just trying';
+        return Inertia::render('Profile/Show');
+    }
+
+    /**
+     * Update the user's profile information.
+     */
+    public function updatePassword(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required','string','min:8', 'confirmed'],
+        ]);
+
+        $request->user()->update([
+            'password' => ($request->password),
+        ]);
+
+        return Redirect::route('profile.edit');
+    }
+
+    /**
+     * Update the user's profile information.
+     */
+    public function updateEmail(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'email' => ['required','string', 'email','max:255', 'unique:users'],
+        ]);
+
+        $request->user()->update([
+            'email' => ($request->email),
+        ]);
+
+        return Redirect::route('profile.edit');
     }
 }
