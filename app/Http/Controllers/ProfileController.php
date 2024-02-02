@@ -85,4 +85,21 @@ class ProfileController extends Controller
 
         return Redirect::route('profile.edit');
     }
+
+    /**
+     * Update the user's profile information.
+     */
+    public function updateEmail(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'email' => ['required','string', 'email','max:255', 'unique:users'],
+        ]);
+
+        $request->user()->update([
+            'email' => ($request->email),
+        ]);
+
+        return Redirect::route('profile.edit');
+    }
 }
